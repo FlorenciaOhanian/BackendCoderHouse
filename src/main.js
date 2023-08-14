@@ -1,4 +1,6 @@
-import {promises as fs} from 'fs'
+import {
+    promises as fs
+} from 'fs'
 
 class Product {
     constructor(codigo, nombre, marca, precio, img, unidades, categoria) {
@@ -24,7 +26,7 @@ class Product {
 
 class ProductManager {
     constructor(path) {
-                this.path = path;
+        this.path = path;
     }
     addProduct = async (producto) => {
         const productos = JSON.parse(await fs.readFile(this.path, 'utf-8'))
@@ -38,18 +40,18 @@ class ProductManager {
         }
     }
 
-    getProductos =  async() => {
+    getProductos = async () => {
         const productos = JSON.parse(await fs.readFile(this.path, 'utf-8'))
-        return(productos)
+        return (productos)
     }
 
     getProductById = async (productotId) => {
         const productos = JSON.parse(await fs.readFile(this.path, 'utf-8'))
-        const checkId = productos.find(product => product.id === productotId);
-        if (checkId) {
-            console.log(checkId)
+        const productId = productos.filter(product => product.id === productotId);
+        if (productId) {
+            return (productId)
         } else {
-            console.log('No existe producto con ese id')
+            return ('No existe producto con ese id')
         }
     }
     updateProduct = async (id, producto) => {
@@ -128,15 +130,26 @@ app.get('/', (req, res) => {
 })
 
 
-//Para que funcione el query con limite es necesario agregar despues de la url ?limit=x  ----> siendo x un valor ingresado por el usuario ejemplo: http://localhost:8080/productos/?limit=3
+//Para que funcione el query con limite es necesario agregar despues de la url ?limit=x  ----> siendo x un valor ingresado por el usuario ejemplo: http://localhost:8080/productos/?limit=5
 app.get('/productos/', async (req, res) => {
-    const MisProductos = await nuevaInstancia.getProductos()
+    const misProductos = await nuevaInstancia.getProductos()
     const limit = req.query.limit;
     if (limit) {
-        const LimitaProductos = MisProductos.slice(0, parseInt(limit));
-        res.send(LimitaProductos);
+        const limitaProductos = misProductos.slice(0, parseInt(limit));
+        res.send(limitaProductos);
     } else {
-        res.send(MisProductos);
+        res.send(misProductos);
+    }
+})
+
+app.get('/productos/:id', async (req, res) => {
+    const params = req.params;
+
+    const miProductoId = await nuevaInstancia.getProductById(parseInt(params.id))
+    if (!miProductoId) {
+        res.status(404).send({});
+    } else {
+        res.send(miProductoId);
     }
 })
 
