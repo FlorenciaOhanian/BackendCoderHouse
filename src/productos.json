@@ -1,0 +1,112 @@
+[
+  {
+    "codigo": "123CDE",
+    "id": 1,
+    "nombre": "Caño de escape",
+    "marca": "KGI",
+    "precio": 1800,
+    "img": "../img/caño.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Motor"
+  },
+  {
+    "codigo": "456AMG",
+    "id": 2,
+    "nombre": "Amortiguador",
+    "marca": "KGI",
+    "precio": 2300,
+    "img": "../img/amortiguador.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Frenos"
+  },
+  {
+    "codigo": "789CBR",
+    "id": 3,
+    "nombre": "Carburador",
+    "marca": "KGI",
+    "precio": 3600,
+    "img": "../img/carburador.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Motor"
+  },
+  {
+    "codigo": "124CAP",
+    "id": 4,
+    "nombre": "Acelerador",
+    "marca": "KGI",
+    "precio": 3800,
+    "img": "../img/Acelerador.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Frenos"
+  },
+  {
+    "codigo": "582KUJ",
+    "id": 5,
+    "nombre": "Disco de freno",
+    "marca": "KGI",
+    "precio": 2000,
+    "img": "../img/discodefreno.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Frenos"
+  },
+  {
+    "codigo": "723JUH",
+    "id": 6,
+    "nombre": "Pastilla de freno",
+    "marca": "KGI",
+    "precio": 5000,
+    "img": "../img/Pastilladefreno.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Frenos"
+  },
+  {
+    "codigo": "586IAU",
+    "id": 7,
+    "nombre": "Asiento",
+    "marca": "KGI",
+    "precio": 8600,
+    "img": "../img/Asiento.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Exterior"
+  },
+  {
+    "codigo": "657KAER",
+    "id": 8,
+    "nombre": "Funda",
+    "marca": "KGI",
+    "precio": 1200,
+    "img": "../img/funda.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Exterior"
+  },
+  {
+    "codigo": "758AND",
+    "id": 9,
+    "nombre": "Luz",
+    "marca": "KGI",
+    "precio": 5200,
+    "img": "../img/luz.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Exterior"
+  },
+  {
+    "codigo": "325MSE",
+    "id": 10,
+    "nombre": "Cilindro",
+    "marca": "KGI",
+    "precio": 6500,
+    "img": "../img/cilindro.jpg",
+    "unidades": "1 unidad",
+    "cantidad": 1,
+    "categoria": "Motor"
+  }
+]
