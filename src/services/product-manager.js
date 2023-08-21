@@ -1,7 +1,7 @@
 import {
     promises as fs
 } from 'fs'
-import productModel from '../models/producto-models.js';
+// import productModel from '../models/producto-models.js';
 
 class ProductManager {
     constructor(path) {
@@ -14,19 +14,28 @@ class ProductManager {
         return maxId + 1;
     }
 
-    addProduct = async (producto) => {
+    addProduct = async (codigo, nombre, marca, precio, img, unidades, categoria) => {
         const productos = JSON.parse(await fs.readFile(this.path, 'utf-8'))
-        const checkCod = productos.find(product => product.codigo === producto.codigo);
+
+        const checkCod = productos.find(product => product.codigo === codigo);
         if (checkCod) {
             console.log('Codigo ya existe');
-
+            return (false)
         } else {
-            const nuevoProducto = new productModel(producto);
+            let nuevoProducto = {
+                codigo,
+                nombre,
+                marca,
+                precio,
+                img,
+                unidades,
+                categoria
+            };
             console.log('NUEVO PRODUCTO: ', nuevoProducto)
             nuevoProducto.id = await this.getId()
             productos.push(nuevoProducto);
             await fs.writeFile(this.path, JSON.stringify(productos))
-            console.log("Producto agregado", productos)
+            // console.log("Producto agregado", productos)
         }
     }
 
@@ -48,7 +57,7 @@ class ProductManager {
     getProductByCode = async (productoCode) => {
         const productos = JSON.parse(await fs.readFile(this.path, 'utf-8'))
         const productCode = productos.filter(product => product.codigo === productoCode);
-        if (productCode) {
+        if (productCode.length == 0) {
             return (false)
         } else {
             return (true)
@@ -67,7 +76,6 @@ class ProductManager {
             productos[checkId].unidades = producto.unidades || productos[checkId].unidades
             productos[checkId].cantidad = producto.cantidad || productos[checkId].cantidad
             productos[checkId].categoria = producto.categoria || productos[checkId].categoria
-
             await fs.writeFile(this.path, JSON.stringify(productos))
         } else {
             console.log('Producto no encontrado')
