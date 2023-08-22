@@ -8,9 +8,12 @@ class cartManager {
     }
 
     createCart = async () => {
-    const cart = JSON.parse(await fs.readFile(this.path, 'utf-8'))
+        const cart = JSON.parse(await fs.readFile(this.path, 'utf-8'))
         const id = await this.getId()
-        cart.push({ id, products: [] })
+        cart.push({
+            id,
+            products: []
+        })
         await fs.writeFile(this.path, JSON.stringify(cart))
     }
 
@@ -22,37 +25,35 @@ class cartManager {
 
     getCart = async (cid) => {
         const carts = JSON.parse(await fs.readFile(this.path, 'utf-8'));
-        const cartId = carts.filter(cart => cart.id === cartId);
+        const cartId = carts.filter(cart => cart.id === cid);
         return (cartId)
     }
 
 
     addProductToCart = async (cid, pid) => {
+        let respuesta;
         const carts = JSON.parse(await fs.readFile(this.path, 'utf-8'));
         if (!carts.length) return null
         const cartId = carts.filter(cart => cart.id == cid)
+        console.log(cartId[0])
         if (cartId.length == 0) return ("Carrito no encontrado")
-        const prodId = cartId.productos.filter(prod => prod.id == pid)
+        const prodId = cartId[0].products.filter(prod => prod.id == pid)
         if (prodId.length == 0) {
-            cartId.productos.push({
+            cartId[0].products.push({
                 id: pid,
                 quantity: 1
-            })
-            return ("Producto creado")
+            });
+            respuesta = "Producto creado"
         } else {
-            const modificoCantidad = cartId.productos.filter(prod => ({
-                id: prod.id,
-                quantity: Number(prod.quantity) + 1
-            }))
-            const newCart = {
-                ...cartId.id,
-                productos: [...modificoCantidad]
-            }
+            const modificoCantidad = cartId[0].products.find(prod => prod.id == pid)
+            modificoCantidad.quantity = Number(modificoCantidad.quantity) + 1
+            respuesta = `Cantidad aumentada, el producto ${pid} ahora tiene ${modificoCantidad.quantity} unidades`
+
         }
-        await fs.writeFile(this.path, JSON.stringify(newCart))
-        return ("Producto modificado")
+        await fs.writeFile(this.path, JSON.stringify(carts))
+        return respuesta;
     }
-    
+
     /*
     [
     {id: 1, productos: [{id: 2, quantity: 2},{id: 3, quantity: 2},{id: 4, quantity: 2}]},
