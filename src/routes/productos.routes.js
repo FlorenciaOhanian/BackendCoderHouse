@@ -20,7 +20,7 @@ productRouter.get('/', async (req, res) => {
         const limitaProductos = misProductos.slice(0, parseInt(limit));
         res.status(200).send(limitaProductos);
     } else {
-        res.status(404).send(misProductos);
+        res.status(200).send(misProductos);
     }
 })
 
@@ -63,6 +63,7 @@ if (!miProductoId) {
 productRouter.delete('/:id',  async (req,res) => {
     const {id} = req.params;
     const miProductoId = await nuevaInstancia.getProductById(parseInt(id))
+    // console.log(miProductoId)
     if (!miProductoId) {
         res.status(404).send("Producto no encontrado");
     } else {

@@ -1,6 +1,7 @@
 import {
     promises as fs
 } from 'fs'
+import nuevaInstancia from './product-manager.js';
 
 class cartManager {
     constructor(path) {
@@ -35,15 +36,19 @@ class cartManager {
         const carts = JSON.parse(await fs.readFile(this.path, 'utf-8'));
         if (!carts.length) return null
         const cartId = carts.filter(cart => cart.id == cid)
-        console.log(cartId[0])
         if (cartId.length == 0) return ("Carrito no encontrado")
         const prodId = cartId[0].products.filter(prod => prod.id == pid)
         if (prodId.length == 0) {
-            cartId[0].products.push({
-                id: pid,
-                quantity: 1
-            });
-            respuesta = "Producto creado"
+            const checkIdExist = await nuevaInstancia.getProductById(pid)
+            if (checkIdExist) {
+                cartId[0].products.push({
+                    id: pid,
+                    quantity: 1
+                });
+                respuesta = "Producto creado"
+            } else {
+                respuesta = "No existe el producto. Imposible agregar al carrito"
+            }
         } else {
             const modificoCantidad = cartId[0].products.find(prod => prod.id == pid)
             modificoCantidad.quantity = Number(modificoCantidad.quantity) + 1

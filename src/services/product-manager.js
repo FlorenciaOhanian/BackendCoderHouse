@@ -47,10 +47,10 @@ class ProductManager {
     getProductById = async (productotId) => {
         const productos = JSON.parse(await fs.readFile(this.path, 'utf-8'))
         const productId = productos.filter(product => product.id === productotId);
-        if (productId) {
+        if (productId.length != 0) {
             return (productId)
         } else {
-            return ('No existe producto con ese id')
+            return (null)
         }
     }
 
