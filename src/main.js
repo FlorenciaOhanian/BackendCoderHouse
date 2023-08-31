@@ -31,28 +31,35 @@ app.set('views', path.resolve(__dirname, './views'))
 
 //Server de socket.io
 const io = new Server(serverExpress)
-const mensajes = []
-const prods = []
+// const mensajes = []
+let prods = []
 
 io.on('connection', (socket) => {
     console.log("Servidor Socket.io conectado")
-    socket.on('mensajeConexion', (user) => {
-        if (user.rol === "Admin") {
-            socket.emit('credecialesConexion', "Usuario valido")
-        } else {
-            socket.emit('credecialesConexion', "Usuario invalido")
-        }
-    })
+    // socket.on('mensajeConexion', (user) => {
+    //     if (user.rol === "Admin") {
+    //         socket.emit('credecialesConexion', "Usuario valido")
+    //     } else {
+    //         socket.emit('credecialesConexion', "Usuario invalido")
+    //     }
+    // })
 
-    socket.on('mensaje', (infoMensaje) => {
-        console.log(infoMensaje)
-        mensajes.push(infoMensaje)
-        socket.emit('mensajes', mensajes)
-    })
+    // socket.on('mensaje', (infoMensaje) => {
+    //     console.log(infoMensaje)
+    //     mensajes.push(infoMensaje)
+    //     socket.emit('mensajes', mensajes)
+    // })
 
-    socket.on('nuevoProducto', (nuevoProd) =>{
-        prods.push(nuevoProd)
+    socket.on('nuevoProducto', (prod) =>{
+        prods.push(prod)
         socket.emit('prods', prods)
+    })
+    socket.on('eliminarProducto', (eliminarProd) => {
+        const nuevosProds = prods.filter(e => e.codigo != eliminarProd)
+        prods = nuevosProds
+        socket.emit('prods', nuevosProds)
+
+        
     })
 })
 

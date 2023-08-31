@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="../public/css/style.css">
+
+{{#if products}}
+    <h1>Productos</h1>
+
+
+    {{#each products}}
+        <h2>{{this.nombre}}</h2>
+        <p><b>Codigo:</b> {{this.codigo}}</p>
+        <p><b>Marca: $ </b>{{this.marca}}</p>
+        <p><b>Precio:</b> {{this.precio}}</p>
+        <p><b>Unidades:</b> {{this.unidades}}</p>
+        <p><b>Cantidad:</b> {{this.cantidad}}</p>
+        <p><b>Categoria:</b> {{this.categoria}}</p>
+    {{/each}}
+{{else}}
+    <strong>No se ha encontrado ningun producto</strong>
+{{/if}}
+
+
+<script src="../public/js/script.js"></script>
