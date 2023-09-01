@@ -34,7 +34,7 @@ app.set('views', path.resolve(__dirname, './views'))
 //Server de socket.io
 const io = new Server(serverExpress)
 // const mensajes = []
-let prods = []
+
 
 io.on('connection', (socket) => {
     console.log("Servidor Socket.io conectado")
@@ -55,6 +55,7 @@ io.on('connection', (socket) => {
     socket.on('nuevoProducto', async (nuevoProducto) =>{
         const {codigo, nombre, marca, precio, unidades, categoria, cantidad} = nuevoProducto
         const nuevoProd = await productManager.addProduct(codigo, nombre, marca, precio, unidades, categoria, cantidad)
+        console.log('PRODUCTO AGREGADO')
         socket.emit('mostrarNuevoProducto', nuevoProd)
     })
 
@@ -62,10 +63,12 @@ io.on('connection', (socket) => {
         const productos = await productManager.getProductos()
         socket.emit('mostrarProductos', productos)
     })
-    socket.on('eliminarProducto', (eliminarProd) => {
-        const nuevosProds = prods.filter(e => e.codigo != eliminarProd)
-        prods = nuevosProds
-        socket.emit('prods', nuevosProds)
+    socket.on('eliminarProducto', async (idEliminar) => {
+        productManager.deleteProduct(idEliminar)
+        console.log('PRODUCTO ELIMINADO')
+        // const productos = await productManager.getProductos()
+        // const nuevosProds = productos.filter(e => e.id != idEliminar)
+        // socket.emit('nuevosProductos', nuevosProds)
     })
 
 })

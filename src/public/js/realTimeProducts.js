@@ -13,12 +13,9 @@ form.addEventListener('submit', async (e) => {
     e.target.reset()
 })
 
-
-
-const eliminarProducto =  e => socket.emit('eliminarProducto', e.target.id);
-
 socket.emit('cargarProductos')
 
+// En el codigo de abajo muestro todo los productos que tengo en el archivo .json
 socket.on('mostrarProductos', (productos) => {
     productos.forEach(producto => {
         containerProductos.innerHTML += `
@@ -36,6 +33,8 @@ socket.on('mostrarProductos', (productos) => {
         
     });
 })
+
+// En el codigo de abajo muestro el nuevo producto en pantalla
 socket.on('mostrarNuevoProducto', (producto) => {
     containerProductos.innerHTML += `
     <div id=${producto.id} class="containerItem">
@@ -50,6 +49,37 @@ socket.on('mostrarNuevoProducto', (producto) => {
     </div>
     `
 })
+
+const eliminarProducto =  e => socket.emit('eliminarProducto', Number(e.target.id));
+
+document.addEventListener('click', e => e.target.matches('.eliminar') && eliminarProducto(e));
+
+// En el codigo de abajo intente eliminar el producto al cual se le hace click
+// y volver a renderizar todos los productos pero no encontre la forma de que
+// se muestre solo una vez el arreglo de productos
+
+// socket.on('nuevosProductos', (productos) => {
+//     containerProductos=''
+//     productos.forEach(producto => {
+//         containerProductos.innerHTML += `
+//         <div id=${producto.id} class="containerItem">
+//             <h2>${producto.nombre}</h2>
+//             <p><b>Codigo:</b> ${producto.codigo}</p>
+//             <p><b>Marca:</b> ${producto.marca}</p>
+//             <p><b>Precio: $</b>${producto.precio}</p>
+//             <p><b>Unidades:</b> ${producto.unidades}</p>
+//             <p><b>Cantidad:</b> ${producto.cantidad}</p>
+//             <p><b>Categoria:</b> ${producto.categoria}</p>
+//             <button id=${producto.id} class='eliminar'> Eliminar </button>
+//         </div>
+//         `    
+//     })
+// })
+
+
+//Comente el codigo de abajo porque me di cuenta que los datos del formulario 
+//se envian con el submit al hacer click en el boton agregar
+
 // agregarProducto.addEventListener('click', () => {
 //         socket.on('prods', (prods) => {
 //         const containerProductos = document.getElementById('containerProductos')
@@ -65,12 +95,8 @@ socket.on('mostrarNuevoProducto', (producto) => {
 //                 <p><b>Cantidad:</b> ${producto.cantidad}</p>
 //                 <p><b>Categoria:</b> ${producto.categoria}</p>
 //                 <button id=${producto.codigo} class='eliminar'> Eliminar </button>
-
 //             </div>
 // 		`;
 //         })
-
 //     })
 // })
-
-document.addEventListener('click', e => e.target.matches('.eliminar') && eliminarProducto(e));
