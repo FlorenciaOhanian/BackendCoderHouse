@@ -1,5 +1,5 @@
 class productModel {
-    constructor(codigo, nombre, marca, precio, img, unidades, categoria) {
+    constructor(codigo, nombre, marca, precio, img, unidades, categoria, cantidad) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.marca = marca;
@@ -8,6 +8,7 @@ class productModel {
         this.unidades = unidades;
         this.cantidad = 1;
         this.categoria = categoria;
+        this.cantidad = cantidad;
     }
 }
 

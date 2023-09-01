@@ -11,6 +11,7 @@ import path from 'path';
 import {
     Server
 } from 'socket.io';
+import { ProductManager } from './services/product-manager.js';
 
 const PORT = 8080
 const app = express()
@@ -19,6 +20,7 @@ const serverExpress = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
 
+const productManager = new ProductManager(path.join(__dirname, '/data/productos.json'))
 //Middleware
 app.use(express.json())
 app.use(express.urlencoded({
@@ -50,17 +52,22 @@ io.on('connection', (socket) => {
     //     socket.emit('mensajes', mensajes)
     // })
 
-    socket.on('nuevoProducto', (prod) =>{
-        prods.push(prod)
-        socket.emit('prods', prods)
+    socket.on('nuevoProducto', async (nuevoProducto) =>{
+        const {codigo, nombre, marca, precio, unidades, categoria, cantidad} = nuevoProducto
+        const nuevoProd = await productManager.addProduct(codigo, nombre, marca, precio, unidades, categoria, cantidad)
+        socket.emit('mostrarNuevoProducto', nuevoProd)
+    })
+
+    socket.on('cargarProductos', async () => {
+        const productos = await productManager.getProductos()
+        socket.emit('mostrarProductos', productos)
     })
     socket.on('eliminarProducto', (eliminarProd) => {
         const nuevosProds = prods.filter(e => e.codigo != eliminarProd)
         prods = nuevosProds
         socket.emit('prods', nuevosProds)
-
-        
     })
+
 })
 
 //Ruotes  

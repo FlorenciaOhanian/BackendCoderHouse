@@ -3,7 +3,7 @@ import {
 } from 'fs'
 // import productModel from '../models/producto-models.js';
 
-class ProductManager {
+export class ProductManager {
     constructor(path) {
         this.path = path;
     }
@@ -14,7 +14,7 @@ class ProductManager {
         return maxId + 1;
     }
 
-    addProduct = async (codigo, nombre, marca, precio, img, unidades, categoria) => {
+    addProduct = async (codigo, nombre, marca, precio, unidades, categoria, cantidad) => {
         const productos = JSON.parse(await fs.readFile(this.path, 'utf-8'))
 
         const checkCod = productos.find(product => product.codigo === codigo);
@@ -23,18 +23,20 @@ class ProductManager {
             return (false)
         } else {
             let nuevoProducto = {
-                codigo,
-                nombre,
-                marca,
-                precio,
-                img,
-                unidades,
-                categoria
+                codigo: codigo,
+                nombre: nombre,
+                marca: marca,
+                precio: precio,
+                // img,
+                unidades: unidades,
+                categoria: categoria,
+                cantidad: cantidad
             };
-            console.log('NUEVO PRODUCTO: ', nuevoProducto)
+            // console.log('NUEVO PRODUCTO: ', nuevoProducto)
             nuevoProducto.id = await this.getId()
             productos.push(nuevoProducto);
             await fs.writeFile(this.path, JSON.stringify(productos))
+            return nuevoProducto
             // console.log("Producto agregado", productos)
         }
     }
