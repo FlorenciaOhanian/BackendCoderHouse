@@ -11,7 +11,9 @@ import path from 'path';
 import {
     Server
 } from 'socket.io';
-import { ProductManager } from './services/product-manager.js';
+import {
+    ProductManager
+} from './services/product-manager.js';
 
 const PORT = 8080
 const app = express()
@@ -52,8 +54,16 @@ io.on('connection', (socket) => {
     //     socket.emit('mensajes', mensajes)
     // })
 
-    socket.on('nuevoProducto', async (nuevoProducto) =>{
-        const {codigo, nombre, marca, precio, unidades, categoria, cantidad} = nuevoProducto
+    socket.on('nuevoProducto', async (nuevoProducto) => {
+        const {
+            codigo,
+            nombre,
+            marca,
+            precio,
+            unidades,
+            categoria,
+            cantidad
+        } = nuevoProducto
         const nuevoProd = await productManager.addProduct(codigo, nombre, marca, precio, unidades, categoria, cantidad)
         console.log('PRODUCTO AGREGADO')
         socket.emit('mostrarNuevoProducto', nuevoProd)
@@ -84,14 +94,36 @@ app.get('/api/productos', (req, res) => {
 //     res.render('chat', {
 //         css: "style.css",
 //         title: "Chat",
-        
+
 //     })
 // })
 
-app.get('/static', (req, res) => {
+let listaProductos = [];
+
+const getListaProductos = async () => {
+
+    try {
+        listaProductos = await productManager.getProductos();
+    } catch (error) {
+        console.error("Productos no encontrados");
+    }
+}
+getListaProductos();
+
+
+app.get('/static/real', (req, res) => {
     res.render('realTimeProducts', {
         css: "style.css",
         title: "Form",
         js: "realTimeProducts.js"
+    })
+})
+
+app.get('/static/home', (req, res) => {
+    res.render('home', {
+        css: "style.css",
+        title: "Home",
+        
+        productos: listaProductos,
     })
 })
